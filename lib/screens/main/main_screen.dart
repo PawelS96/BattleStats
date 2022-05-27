@@ -5,9 +5,11 @@ import 'package:battlestats/common/contants/app_colors.dart';
 import 'package:battlestats/common/utils/snackbar_util.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
+import 'package:battlestats/common/widgets/nav_button.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/screens/add_player/add_player_screen.dart';
+import 'package:battlestats/screens/detailed_stats/detailed_stats_screen.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -62,6 +64,15 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  List<Widget> _navButtons(PlayerStats stats) {
+    return [
+      NavButton(
+        text: 'Detailed stats',
+        onClick: () => _showDetailedStats(stats),
+      ),
+    ];
+  }
+
   Widget _content(MainViewModel vm) {
     if (vm.isLoading) {
       return SizedBox.expand(
@@ -100,6 +111,7 @@ class _MainScreenState extends State<MainScreen> {
             children: [
               _header(),
               _stats(stats),
+              ..._navButtons(stats),
             ],
           ),
         ),
@@ -205,7 +217,7 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 _statsText(title: 'SCORE/MIN', value: stats.scorePerMinute?.toInt() ?? 0),
-                _statsText(title: 'WINS', value: stats.winPercent ?? '0.0%'),
+                _statsText(title: 'WINS', value: stats.winPercent ?? '0%'),
                 _statsText(title: 'KILLS', value: stats.kills ?? 0),
               ],
             ),
@@ -245,6 +257,15 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showDetailedStats(PlayerStats stats) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => DetailedStatsScreen(stats: stats),
       ),
     );
   }

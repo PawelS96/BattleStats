@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:battlestats/app/app_viewmodel.dart';
 import 'package:battlestats/common/contants/app_colors.dart';
+import 'package:battlestats/common/utils/snackbar_util.dart';
+import 'package:battlestats/common/utils/text_formatter.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/models/player/player.dart';
+import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/screens/add_player/add_player_screen.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
@@ -24,10 +29,19 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late MainViewModel vm;
 
+  late StreamSubscription<String> errorSub;
+
   @override
   void initState() {
     super.initState();
     vm = MainViewModel.of(context, widget.player);
+    errorSub = vm.errors.listen((msg) => showSnackBarMessage(context, msg));
+  }
+
+  @override
+  void dispose() {
+    errorSub.cancel();
+    super.dispose();
   }
 
   @override
@@ -49,14 +63,74 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _content(MainViewModel vm) {
-    return SizedBox.expand(
-      child: SingleChildScrollView(
+    if (vm.isLoading) {
+      return SizedBox.expand(
         child: Column(
           children: [
             _header(),
+            const Spacer(),
+            const CircularProgressIndicator(),
+            const Spacer(),
           ],
         ),
+      );
+    }
+
+    final stats = vm.stats;
+
+    if (stats == null) {
+      return SizedBox.expand(
+        child: Column(
+          children: [
+            _header(),
+            const Spacer(),
+            _error(),
+            const Spacer(),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: vm.refresh,
+      child: SizedBox.expand(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              _header(),
+              _stats(stats),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget _error() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        const Text(
+          'Something went wrong',
+          style: TextStyle(color: AppColors.textPrimary, fontSize: 18),
+        ),
+        const SizedBox(height: 8),
+        MaterialButton(
+          onPressed: vm.retry,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 2, color: Colors.white),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: const Text(
+            'Try again',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -115,6 +189,63 @@ class _MainScreenState extends State<MainScreen> {
         ),
         _changePlayerButton(),
       ],
+    );
+  }
+
+  Widget _stats(PlayerStats stats) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                _statsText(title: 'SCORE/MIN', value: stats.scorePerMinute?.toInt() ?? 0),
+                _statsText(title: 'WINS', value: stats.winPercent ?? '0.0%'),
+                _statsText(title: 'KILLS', value: stats.kills ?? 0),
+              ],
+            ),
+            const SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                _statsText(title: 'KILLS/MIN', value: stats.killsPerMinute ?? 0),
+                _statsText(title: 'TIME', value: formatTime((stats.secondsPlayed ?? 0) * 1000)),
+                _statsText(title: 'DEATHS', value: stats.deaths ?? 0),
+              ],
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _statsText({
+    required String title,
+    required dynamic value,
+  }) {
+    return Flexible(
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 16, color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: 8),
+          FittedBox(
+            child: Text(
+              value.toString(),
+              style: const TextStyle(fontSize: 32, color: AppColors.textPrimary),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

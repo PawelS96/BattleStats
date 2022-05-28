@@ -4,6 +4,8 @@ import 'package:battlestats/data/remote/stats_service.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/vehicles/vehicle_sort_mode.dart';
+import 'package:battlestats/models/vehicles/vehicle_stats_response.dart';
 import 'package:battlestats/models/weapons/weapon_stats_response.dart';
 import 'package:battlestats/models/weapons/weapon_sort_mode.dart';
 
@@ -46,8 +48,9 @@ class FakeStatsService implements StatsService {
 
   final PlayerStats? stats;
   final WeaponStatsResponse? weaponStats;
+  final VehicleStatsResponse? vehicleStats;
 
-  FakeStatsService({this.stats, this.weaponStats});
+  FakeStatsService({this.stats, this.weaponStats, this.vehicleStats});
 
   @override
   Future<PlayerStats?> getPlayerStats(String playerName, GamingPlatform platform) async {
@@ -58,10 +61,16 @@ class FakeStatsService implements StatsService {
   Future<WeaponStatsResponse?> getWeaponStats(String playerName, GamingPlatform platform) async {
     return weaponStats;
   }
+
+  @override
+  Future<VehicleStatsResponse?> getVehicleStats(String playerName, GamingPlatform platform) async {
+   return vehicleStats;
+  }
 }
 
 class FakePreferences implements Preferences {
   WeaponSortMode? _weaponSortMode;
+  VehicleSortMode? _vehicleSortMode;
 
   @override
   Future<WeaponSortMode?> getWeaponsSortMode() {
@@ -71,5 +80,15 @@ class FakePreferences implements Preferences {
   @override
   Future<void> setWeaponsSortMode(WeaponSortMode mode) async {
     _weaponSortMode = mode;
+  }
+
+  @override
+  Future<VehicleSortMode?> getVehiclesSortMode() {
+    return Future.value(_vehicleSortMode);
+  }
+
+  @override
+  Future<void> setVehiclesSortMode(VehicleSortMode mode) async {
+    _vehicleSortMode = mode;
   }
 }

@@ -12,6 +12,8 @@ import 'package:battlestats/screens/add_player/add_player_screen.dart';
 import 'package:battlestats/screens/detailed_stats/detailed_stats_screen.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
+import 'package:battlestats/screens/vehicles/vehicles_screen.dart';
+import 'package:battlestats/screens/vehicles/vehicles_viewmodel.dart';
 import 'package:battlestats/screens/weapons/weapons_screen.dart';
 import 'package:battlestats/screens/weapons/weapons_viewmodel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -33,6 +35,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late MainViewModel vm;
   late WeaponsViewModel weaponsVM;
+  late VehiclesViewModel vehiclesVM;
 
   late StreamSubscription<String> errorSub;
 
@@ -41,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     vm = MainViewModel.of(context, widget.player);
     weaponsVM = WeaponsViewModel.of(context, widget.player);
+    vehiclesVM = VehiclesViewModel.of(context, widget.player);
     errorSub = vm.errors.listen((msg) => showSnackBarMessage(context, msg));
   }
 
@@ -77,6 +81,10 @@ class _MainScreenState extends State<MainScreen> {
       NavButton(
         text: 'Weapons',
         onClick: _showWeapons,
+      ),
+      NavButton(
+        text: 'Vehicles',
+        onClick: _showVehicles,
       ),
     ];
   }
@@ -286,6 +294,19 @@ class _MainScreenState extends State<MainScreen> {
         builder: (ctx) => ChangeNotifierProvider.value(
           value: weaponsVM,
           child: const WeaponsScreen(),
+        ),
+      ),
+    );
+  }
+
+  void _showVehicles() {
+    vehiclesVM.refresh();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => ChangeNotifierProvider.value(
+          value: vehiclesVM,
+          child: const VehiclesScreen(),
         ),
       ),
     );

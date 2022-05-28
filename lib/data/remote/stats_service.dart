@@ -1,6 +1,7 @@
 import 'package:battlestats/data/remote/network_client.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/vehicles/vehicle_stats_response.dart';
 import 'package:battlestats/models/weapons/weapon_stats_response.dart';
 
 class StatsService {
@@ -43,6 +44,26 @@ class StatsService {
 
     try {
       return WeaponStatsResponse.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<VehicleStatsResponse?> getVehicleStats(String playerName, GamingPlatform platform) async {
+    final response = await _api.sendRequest(
+      'vehicles',
+      {
+        'name': playerName,
+        'platform': platform.name,
+      },
+    );
+
+    if (response is Map && response.containsKey('errors')) {
+      return null;
+    }
+
+    try {
+      return VehicleStatsResponse.fromJson(response);
     } catch (e) {
       return null;
     }

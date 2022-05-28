@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.psob.battlestats">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="BattleStats"
         android:name="${applicationName}"

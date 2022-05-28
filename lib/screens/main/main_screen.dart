@@ -12,6 +12,8 @@ import 'package:battlestats/screens/add_player/add_player_screen.dart';
 import 'package:battlestats/screens/detailed_stats/detailed_stats_screen.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
+import 'package:battlestats/screens/weapons/weapons_screen.dart';
+import 'package:battlestats/screens/weapons/weapons_viewmodel.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late MainViewModel vm;
+  late WeaponsViewModel weaponsVM;
 
   late StreamSubscription<String> errorSub;
 
@@ -37,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     vm = MainViewModel.of(context, widget.player);
+    weaponsVM = WeaponsViewModel.of(context, widget.player);
     errorSub = vm.errors.listen((msg) => showSnackBarMessage(context, msg));
   }
 
@@ -69,6 +73,10 @@ class _MainScreenState extends State<MainScreen> {
       NavButton(
         text: 'Detailed stats',
         onClick: () => _showDetailedStats(stats),
+      ),
+      NavButton(
+        text: 'Weapons',
+        onClick: _showWeapons,
       ),
     ];
   }
@@ -266,6 +274,19 @@ class _MainScreenState extends State<MainScreen> {
       context,
       MaterialPageRoute(
         builder: (ctx) => DetailedStatsScreen(stats: stats),
+      ),
+    );
+  }
+
+  void _showWeapons() {
+    weaponsVM.refresh();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => ChangeNotifierProvider.value(
+          value: weaponsVM,
+          child: const WeaponsScreen(),
+        ),
       ),
     );
   }

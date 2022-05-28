@@ -1,8 +1,11 @@
 import 'package:battlestats/data/local/player_repository.dart';
+import 'package:battlestats/data/local/preferences.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/weapons/weapon_stats_response.dart';
+import 'package:battlestats/models/weapons/weapon_sort_mode.dart';
 
 class FakePlayerRepository implements PlayerRepository {
   Player? _selectedPlayer;
@@ -42,11 +45,31 @@ class FakeStatsService implements StatsService {
   static final defaultStats = PlayerStats.fromJson({});
 
   final PlayerStats? stats;
+  final WeaponStatsResponse? weaponStats;
 
-  FakeStatsService(this.stats);
+  FakeStatsService({this.stats, this.weaponStats});
 
   @override
   Future<PlayerStats?> getPlayerStats(String playerName, GamingPlatform platform) async {
     return stats;
+  }
+
+  @override
+  Future<WeaponStatsResponse?> getWeaponStats(String playerName, GamingPlatform platform) async {
+    return weaponStats;
+  }
+}
+
+class FakePreferences implements Preferences {
+  WeaponSortMode? _weaponSortMode;
+
+  @override
+  Future<WeaponSortMode?> getWeaponsSortMode() {
+    return Future.value(_weaponSortMode);
+  }
+
+  @override
+  Future<void> setWeaponsSortMode(WeaponSortMode mode) async {
+    _weaponSortMode = mode;
   }
 }

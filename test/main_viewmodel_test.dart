@@ -24,7 +24,7 @@ void main() {
       final playerRepo = MockPlayerRepo();
       when(() => playerRepo.getPlayers()).thenAnswer((_) => Future.value(savedPlayers));
 
-      final statsService = FakeStatsService(FakeStatsService.defaultStats);
+      final statsService = FakeStatsService(stats: FakeStatsService.defaultStats);
       final vm = MainViewModel(player3, statsService, playerRepo, MockAppViewModel());
       async.elapse(const Duration(milliseconds: 1));
 
@@ -36,7 +36,7 @@ void main() {
     fakeAsync((async) async {
       final player = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
-      final statsService = FakeStatsService(FakeStatsService.defaultStats);
+      final statsService = FakeStatsService(stats: FakeStatsService.defaultStats);
       final appVM = AppViewModel(playerRepo);
       final vm = MainViewModel(player, statsService, playerRepo, appVM);
       async.elapse(const Duration(milliseconds: 1));
@@ -57,7 +57,7 @@ void main() {
       final selectedPlayer = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final otherPlayer = Player(1, 'other player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
-      final statsService = FakeStatsService(FakeStatsService.defaultStats);
+      final statsService = FakeStatsService(stats: FakeStatsService.defaultStats);
 
       final vm = MainViewModel(selectedPlayer, statsService, playerRepo, MockAppViewModel());
       async.elapse(const Duration(milliseconds: 1));
@@ -74,7 +74,7 @@ void main() {
       final selectedPlayer = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final otherPlayer = Player(1, 'other player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
-      final statsService = FakeStatsService(FakeStatsService.defaultStats);
+      final statsService = FakeStatsService(stats: FakeStatsService.defaultStats);
       final appVM = AppViewModel(playerRepo);
 
       final vm = MainViewModel(selectedPlayer, statsService, playerRepo, appVM);
@@ -92,7 +92,7 @@ void main() {
       final selectedPlayer = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
       final appVM = AppViewModel(playerRepo);
-      final statsService = FakeStatsService(FakeStatsService.defaultStats);
+      final statsService = FakeStatsService(stats: FakeStatsService.defaultStats);
 
       final vm = MainViewModel(selectedPlayer, statsService, playerRepo, appVM);
       async.elapse(const Duration(milliseconds: 1));
@@ -108,7 +108,7 @@ void main() {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
       final stats = PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 100, deaths: 50);
-      final statsService = FakeStatsService(stats);
+      final statsService = FakeStatsService(stats: stats);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsService, playerRepo, AppViewModel(playerRepo));
 
@@ -191,7 +191,7 @@ void main() {
   test('Should display error when retry fails', () {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
-      final statsService = FakeStatsService(null);
+      final statsService = FakeStatsService(stats: null);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsService, playerRepo, AppViewModel(playerRepo));
 

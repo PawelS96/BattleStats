@@ -1,5 +1,6 @@
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/data/local/player_repository.dart';
+import 'package:battlestats/data/local/preferences.dart';
 import 'package:battlestats/data/remote/network_client.dart';
 import 'package:battlestats/data/remote/player_service.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
@@ -20,6 +21,7 @@ class BattleStatsApp extends StatelessWidget {
         Provider(create: (_) => PlayerService(NetworkClient())),
         Provider(create: (ctx) => PlayerRepository()),
         Provider(create: (ctx) => StatsService(NetworkClient())),
+        Provider(create: (ctx) => Preferences()),
       ],
       child: MultiProvider(
         providers: [

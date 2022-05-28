@@ -11,7 +11,11 @@ class BackgroundImage extends StatelessWidget {
       children: [
         ClipRRect(
           child: ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 9, sigmaY: 9),
+            imageFilter: ImageFilter.blur(
+              sigmaX: 9,
+              sigmaY: 9,
+              tileMode: TileMode.mirror,
+            ),
             child: SizedBox.expand(
               child: Image.asset(
                 'assets/images/battlefield.jpg',

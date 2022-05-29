@@ -31,9 +31,9 @@ class VehicleStats {
       timeIn: castOrNull<int>(json['timeIn']) ?? 0,
     );
   }
-}
 
-extension VehicleStatsExt on VehicleStats {
+  int get starCount => kills ~/ 100;
+
   String get formattedName =>
       vehicleName.withTrimmedSpaces().withCapitalizedWords().withUppercaseWords(
         [

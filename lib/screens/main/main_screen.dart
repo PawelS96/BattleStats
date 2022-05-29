@@ -6,6 +6,7 @@ import 'package:battlestats/common/utils/snackbar_util.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/nav_button.dart';
+import 'package:battlestats/common/widgets/stats_text.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/screens/add_player/add_player_screen.dart';
@@ -259,21 +260,7 @@ class _MainScreenState extends State<MainScreen> {
     required dynamic value,
   }) {
     return Flexible(
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 16, color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: 8),
-          FittedBox(
-            child: Text(
-              value.toString(),
-              style: const TextStyle(fontSize: 32, color: AppColors.textPrimary),
-            ),
-          ),
-        ],
-      ),
+      child: StatsText(title: title, value: value.toString())
     );
   }
 

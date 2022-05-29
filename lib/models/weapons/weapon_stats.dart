@@ -46,4 +46,6 @@ class WeaponStats {
       weaponName: castOrNull<String>(json['weaponName']) ?? '',
     );
   }
+
+  int get starCount => kills ~/ 100;
 }

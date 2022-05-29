@@ -121,4 +121,47 @@ class PlayerStats {
     repairs = castOrNull<double>(json['repairs']);
     killAssists = castOrNull<double>(json['killAssists']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "avatar": avatar,
+      "userName": userName,
+      "id": id,
+      "rank": rank,
+      "rankImg": rankImg,
+      "rankName": rankName,
+      "skill": skill,
+      "scorePerMinute": scorePerMinute,
+      "killsPerMinute": killsPerMinute,
+      "winPercent": winPercent,
+      "bestClass": bestClass,
+      "accuracy": accuracy,
+      "headshots": headshots,
+      "timePlayed": timePlayed,
+      "secondsPlayed": secondsPlayed,
+      "killDeath": killDeath,
+      "infantryKillDeath": infantryKillDeath,
+      "infantryKillsPerMinute": infantryKillsPerMinute,
+      "kills": kills,
+      "deaths": deaths,
+      "wins": wins,
+      "loses": loses,
+      "longestHeadShot": longestHeadShot,
+      "revives": revives,
+      "dogtagsTaken": dogtagsTaken,
+      "highestKillStreak": highestKillStreak,
+      "roundsPlayed": roundsPlayed,
+      "awardScore": awardScore,
+      "bonusScore": bonusScore,
+      "squadScore": squadScore,
+      "currentRankProgress": currentRankProgress,
+      "totalRankProgress": totalRankProgress,
+      "avengerKills": avengerKills,
+      "saviorKills": saviorKills,
+      "headShots": headShots,
+      "heals": heals,
+      "repairs": repairs,
+      "killAssists": killAssists,
+    };
+  }
 }

@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:battlestats/app/app_viewmodel.dart';
 import 'package:battlestats/data/local/player_repository.dart';
-import 'package:battlestats/data/remote/stats_service.dart';
+import 'package:battlestats/data/repository/repository.dart';
+import 'package:battlestats/data/repository/stats_repository.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:collection/collection.dart';
@@ -11,18 +12,18 @@ import 'package:provider/provider.dart';
 
 class MainViewModel with ChangeNotifier {
   final Player player;
-  final StatsService _service;
+  final StatsRepository _statsRepo;
   final PlayerRepository _playerRepo;
   final AppViewModel _appViewModel;
 
-  MainViewModel(this.player, this._service, this._playerRepo, this._appViewModel) {
+  MainViewModel(this.player, this._statsRepo, this._playerRepo, this._appViewModel) {
     _init();
   }
 
   factory MainViewModel.of(BuildContext context, Player player) {
     return MainViewModel(
       player,
-      context.read<StatsService>(),
+      context.read<StatsRepository>(),
       context.read<PlayerRepository>(),
       context.read<AppViewModel>(),
     );
@@ -45,9 +46,11 @@ class MainViewModel with ChangeNotifier {
   void _loadData(Player player) async {
     isLoading = true;
     notifyListeners();
-    stats = await _service.getPlayerStats(player.name, player.platform);
-    isLoading = false;
-    notifyListeners();
+    _statsRepo.getPlayerStats(player).listen((data) {
+      stats = data;
+      isLoading = false;
+      notifyListeners();
+    });
   }
 
   void deletePlayer(Player player) async {
@@ -78,27 +81,29 @@ class MainViewModel with ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    final updatedStats = await _service.getPlayerStats(player.name, player.platform);
-    if (updatedStats != null) {
-      stats = updatedStats;
-      notifyListeners();
-    } else {
-      _errorController.add('Something went wrong');
-    }
+    _statsRepo.getPlayerStats(player, accessType: DataAccessType.onlyRemote).listen((data) {
+      if (data != null) {
+        stats = data;
+        notifyListeners();
+      } else {
+        _errorController.add('Something went wrong');
+      }
+    });
   }
 
   void retry() async {
     isLoading = true;
     notifyListeners();
 
-    final updatedStats = await _service.getPlayerStats(player.name, player.platform);
-    if (updatedStats != null) {
-      stats = updatedStats;
-    } else {
-      _errorController.add('Something went wrong');
-    }
+    _statsRepo.getPlayerStats(player, accessType: DataAccessType.onlyRemote).listen((data) {
+      if (data != null) {
+        stats = data;
+      } else {
+        _errorController.add('Something went wrong');
+      }
 
-    isLoading = false;
-    notifyListeners();
+      isLoading = false;
+      notifyListeners();
+    });
   }
 }

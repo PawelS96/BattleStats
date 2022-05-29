@@ -1,9 +1,11 @@
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/data/local/player_repository.dart';
 import 'package:battlestats/data/local/preferences.dart';
+import 'package:battlestats/data/local/stats_cache.dart';
 import 'package:battlestats/data/remote/network_client.dart';
 import 'package:battlestats/data/remote/player_service.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
+import 'package:battlestats/data/repository/stats_repository.dart';
 import 'package:battlestats/screens/add_player/add_player_screen.dart';
 import 'package:battlestats/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +24,17 @@ class BattleStatsApp extends StatelessWidget {
         Provider(create: (ctx) => PlayerRepository()),
         Provider(create: (ctx) => StatsService(NetworkClient())),
         Provider(create: (ctx) => Preferences()),
+        Provider(create: (ctx) => StatsCache()),
       ],
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: AppViewModel.of),
+          Provider<StatsRepository>(
+            create: (ctx) => StatsRepositoryImpl(
+              ctx.read<StatsCache>(),
+              ctx.read<StatsService>(),
+            ),
+          )
         ],
         child: MaterialApp(
           title: 'Battlestats',

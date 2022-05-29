@@ -1,6 +1,8 @@
 import 'package:battlestats/data/local/player_repository.dart';
 import 'package:battlestats/data/local/preferences.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
+import 'package:battlestats/data/repository/repository.dart';
+import 'package:battlestats/data/repository/stats_repository.dart';
 import 'package:battlestats/models/classes/class_stats_response.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
@@ -16,6 +18,9 @@ class FakePlayerRepository implements PlayerRepository {
 
   FakePlayerRepository({Player? selectedPlayer}) {
     _selectedPlayer = selectedPlayer;
+    if (selectedPlayer != null) {
+      _players.add(selectedPlayer);
+    }
   }
 
   @override
@@ -97,5 +102,23 @@ class FakePreferences implements Preferences {
   @override
   Future<void> setVehiclesSortMode(VehicleSortMode mode) async {
     _vehicleSortMode = mode;
+  }
+}
+
+class FakeStatsRepository implements StatsRepository {
+  List<PlayerStats?> values;
+
+  FakeStatsRepository(this.values);
+
+  void setValues(List<PlayerStats?> newValues) {
+    values = newValues.toList();
+  }
+
+  @override
+  Stream<PlayerStats?> getPlayerStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return Stream.fromIterable(values);
   }
 }

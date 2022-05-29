@@ -7,13 +7,15 @@ class BackgroundImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final longestSide = MediaQuery.of(context).size.longestSide;
+    final blurSigma = longestSide / 75 + (longestSide - 800).abs() / 75;
     return Stack(
       children: [
         ClipRRect(
           child: ImageFiltered(
             imageFilter: ImageFilter.blur(
-              sigmaX: 9,
-              sigmaY: 9,
+              sigmaX: blurSigma,
+              sigmaY: blurSigma,
               tileMode: TileMode.mirror,
             ),
             child: SizedBox.expand(

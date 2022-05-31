@@ -3,14 +3,14 @@ import 'package:battlestats/data/local/preferences.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
 import 'package:battlestats/data/repository/repository.dart';
 import 'package:battlestats/data/repository/stats_repository.dart';
-import 'package:battlestats/models/classes/class_stats_response.dart';
+import 'package:battlestats/models/classes/class_stats.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_sort_mode.dart';
-import 'package:battlestats/models/vehicles/vehicle_stats_response.dart';
+import 'package:battlestats/models/vehicles/vehicle_stats.dart';
 import 'package:battlestats/models/weapons/weapon_sort_mode.dart';
-import 'package:battlestats/models/weapons/weapon_stats_response.dart';
+import 'package:battlestats/models/weapons/weapon_stats.dart';
 
 class FakePlayerRepository implements PlayerRepository {
   Player? _selectedPlayer;
@@ -53,9 +53,9 @@ class FakeStatsService implements StatsService {
   static final defaultStats = PlayerStats.fromJson({});
 
   final PlayerStats? stats;
-  final WeaponStatsResponse? weaponStats;
-  final VehicleStatsResponse? vehicleStats;
-  final ClassStatsResponse? classStats;
+  final List<WeaponStats>? weaponStats;
+  final List<VehicleStats>? vehicleStats;
+  final List<ClassStats>? classStats;
 
   FakeStatsService({this.stats, this.weaponStats, this.vehicleStats, this.classStats});
 
@@ -65,17 +65,17 @@ class FakeStatsService implements StatsService {
   }
 
   @override
-  Future<WeaponStatsResponse?> getWeaponStats(String playerName, GamingPlatform platform) async {
+  Future<List<WeaponStats>?> getWeaponStats(String playerName, GamingPlatform platform) async {
     return weaponStats;
   }
 
   @override
-  Future<VehicleStatsResponse?> getVehicleStats(String playerName, GamingPlatform platform) async {
+  Future<List<VehicleStats>?> getVehicleStats(String playerName, GamingPlatform platform) async {
     return vehicleStats;
   }
 
   @override
-  Future<ClassStatsResponse?> getClassStats(String playerName, GamingPlatform platform) async {
+  Future<List<ClassStats>?> getClassStats(String playerName, GamingPlatform platform) async {
     return classStats;
   }
 }

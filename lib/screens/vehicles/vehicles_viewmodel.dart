@@ -33,7 +33,7 @@ class VehiclesViewModel with ChangeNotifier {
   void _loadData() async {
     sortMode = await _preferences.getVehiclesSortMode() ?? VehicleSortMode.kills;
     final response = await _service.getVehicleStats(_player.name, _player.platform);
-    _allVehicles = response?.vehicles ?? [];
+    _allVehicles = response ?? [];
     vehicles = _allVehicles.toList();
     selectedVehicleTypes = vehicleTypes;
     _filterItems();
@@ -45,7 +45,7 @@ class VehiclesViewModel with ChangeNotifier {
   Future<void> refresh() async {
     final response = await _service.getVehicleStats(_player.name, _player.platform);
     if (response != null) {
-      _allVehicles = response.vehicles ?? [];
+      _allVehicles = response ?? [];
       vehicles = _allVehicles.toList();
       _filterItems();
       _sortItems(sortMode);

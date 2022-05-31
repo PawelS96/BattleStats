@@ -32,7 +32,7 @@ class WeaponsViewModel with ChangeNotifier {
   void _loadData() async {
     sortMode = await _preferences.getWeaponsSortMode() ?? WeaponSortMode.kills;
     final response = await _service.getWeaponStats(_player.name, _player.platform);
-    _allWeapons = response?.weapons ?? [];
+    _allWeapons = response ?? [];
     weapons = _allWeapons.toList();
     selectedWeaponTypes = weaponTypes;
     _filterItems();
@@ -44,7 +44,7 @@ class WeaponsViewModel with ChangeNotifier {
   Future<void> refresh() async {
     final response = await _service.getWeaponStats(_player.name, _player.platform);
     if (response != null) {
-      _allWeapons = response.weapons;
+      _allWeapons = response;
       weapons = _allWeapons.toList();
       _filterItems();
       _sortItems(sortMode);

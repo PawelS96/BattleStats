@@ -1,8 +1,11 @@
 import 'package:battlestats/data/remote/network_client.dart';
+import 'package:battlestats/models/classes/class_stats.dart';
 import 'package:battlestats/models/classes/class_stats_response.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/vehicles/vehicle_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats_response.dart';
+import 'package:battlestats/models/weapons/weapon_stats.dart';
 import 'package:battlestats/models/weapons/weapon_stats_response.dart';
 
 class StatsService {
@@ -30,7 +33,7 @@ class StatsService {
     }
   }
 
-  Future<WeaponStatsResponse?> getWeaponStats(String playerName, GamingPlatform platform) async {
+  Future<List<WeaponStats>?> getWeaponStats(String playerName, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'weapons',
       {
@@ -44,13 +47,13 @@ class StatsService {
     }
 
     try {
-      return WeaponStatsResponse.fromJson(response);
+      return WeaponStatsResponse.fromJson(response).weapons;
     } catch (e) {
       return null;
     }
   }
 
-  Future<VehicleStatsResponse?> getVehicleStats(String playerName, GamingPlatform platform) async {
+  Future<List<VehicleStats>?> getVehicleStats(String playerName, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'vehicles',
       {
@@ -64,13 +67,13 @@ class StatsService {
     }
 
     try {
-      return VehicleStatsResponse.fromJson(response);
+      return VehicleStatsResponse.fromJson(response).vehicles;
     } catch (e) {
       return null;
     }
   }
 
-  Future<ClassStatsResponse?> getClassStats(String playerName, GamingPlatform platform) async {
+  Future<List<ClassStats>?> getClassStats(String playerName, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'classes',
       {
@@ -84,7 +87,7 @@ class StatsService {
     }
 
     try {
-      return ClassStatsResponse.fromJson(response);
+      return ClassStatsResponse.fromJson(response).classes;
     } catch (e) {
       return null;
     }

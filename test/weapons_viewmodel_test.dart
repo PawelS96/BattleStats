@@ -2,7 +2,6 @@ import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/weapons/weapon_sort_mode.dart';
 import 'package:battlestats/models/weapons/weapon_stats.dart';
-import 'package:battlestats/models/weapons/weapon_stats_response.dart';
 import 'package:battlestats/screens/weapons/weapons_viewmodel.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,12 +26,7 @@ void main() {
     WeaponSortMode.kpm: [weapon2, weapon3, weapon1],
   };
 
-  final weaponsResponse = WeaponStatsResponse(
-    player.id,
-    player.name,
-    player.avatar,
-    weaponsNotSorted.toList(),
-  );
+  final weaponsResponse = weaponsNotSorted.toList();
 
   test('Should sort correctly and save sort mode to preferences', () {
     fakeAsync((async) async {
@@ -112,7 +106,7 @@ void main() {
 
       await vm.refresh();
 
-      expect(vm.weapons, weaponsResponse.weapons);
+      expect(vm.weapons, weaponsResponse);
     });
   });
 }

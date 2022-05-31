@@ -23,7 +23,7 @@ class ClassesViewModel with ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final response = await _statsService.getClassStats(_player.name, _player.platform);
-    classes = response?.classes ?? [];
+    classes = response ?? [];
     _sort();
     isLoading = false;
     notifyListeners();
@@ -32,7 +32,7 @@ class ClassesViewModel with ChangeNotifier {
   Future<void> refresh() async {
     final response = await _statsService.getClassStats(_player.name, _player.platform);
     if (response != null) {
-      classes = response.classes;
+      classes = response;
       _sort();
       notifyListeners();
     }

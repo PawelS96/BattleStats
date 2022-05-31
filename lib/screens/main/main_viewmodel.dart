@@ -56,6 +56,7 @@ class MainViewModel with ChangeNotifier {
   void deletePlayer(Player player) async {
     final selectedPlayer = await _playerRepo.getSelectedPlayer();
     await _playerRepo.deletePlayer(player);
+    _statsRepo.clearCache(player);
     players = await _getPlayers();
 
     if (players.isEmpty) {

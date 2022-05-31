@@ -54,6 +54,20 @@ class StatsCache {
     return _getList(_getClassStatsKey(player), ClassStats.fromJson);
   }
 
+  Future<void> clearCache(Player player) async {
+    final sp = await SharedPreferences.getInstance();
+    final keys = [
+      _getPlayerStatsKey(player),
+      _getVehiclesStatsKey(player),
+      _getWeaponStatsKey(player),
+      _getClassStatsKey(player),
+    ];
+
+    for (var key in keys) {
+      await sp.remove(key);
+    }
+  }
+
   Future<void> _setList<T>(
     List<T> items,
     String key,

@@ -27,6 +27,8 @@ abstract class StatsRepository {
     Player player, {
     DataAccessType accessType = DataAccessType.localAndRemote,
   });
+
+  Future<void> clearCache(Player player);
 }
 
 class StatsRepositoryImpl extends StatsRepository with Repository {
@@ -85,5 +87,10 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       saveToCache: (stats) => _cache.setClassStats(player, stats),
       getFromWeb: () => _service.getClassStats(player.name, player.platform),
     );
+  }
+
+  @override
+  Future<void> clearCache(Player player) {
+   return _cache.clearCache(player);
   }
 }

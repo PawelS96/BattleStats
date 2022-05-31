@@ -160,4 +160,9 @@ class FakeStatsRepository implements StatsRepository {
   }) {
     return Stream.fromIterable(weaponStats);
   }
+
+  @override
+  Future<void> clearCache(Player player) {
+    return Future.value(null);
+  }
 }

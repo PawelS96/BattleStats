@@ -1,4 +1,4 @@
-import 'package:battlestats/common/utils/cast_utils.dart';
+import 'package:battlestats/common/utils/generic_utils.dart';
 
 class PlayerStats {
   String? avatar;

@@ -1,4 +1,4 @@
-import 'package:battlestats/common/utils/cast_utils.dart';
+import 'package:battlestats/common/utils/generic_utils.dart';
 
 class ClassStats {
   final String name;
@@ -26,5 +26,16 @@ class ClassStats {
       image: castOrNull<String>(json['image']) ?? '',
       secondsPlayed: castOrNull<int>(json['secondsPlayed']) ?? 0,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "className": name,
+      "score": score,
+      "kills": kills,
+      "kpm": kpm,
+      "image": image,
+      "secondsPlayed": secondsPlayed,
+    };
   }
 }

@@ -24,7 +24,9 @@ void main() {
       final playerRepo = MockPlayerRepo();
       when(() => playerRepo.getPlayers()).thenAnswer((_) => Future.value(savedPlayers));
 
-      final statsRepo = FakeStatsRepository([FakeStatsService.defaultStats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([FakeStatsService.defaultStats]);
+
       final vm = MainViewModel(player3, statsRepo, playerRepo, MockAppViewModel());
       async.elapse(const Duration(milliseconds: 1));
 
@@ -36,7 +38,9 @@ void main() {
     fakeAsync((async) {
       final player = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
-      final statsRepo = FakeStatsRepository([FakeStatsService.defaultStats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([FakeStatsService.defaultStats]);
+
       final appVM = AppViewModel(playerRepo);
       final vm = MainViewModel(player, statsRepo, playerRepo, appVM);
       async.elapse(const Duration(milliseconds: 1));
@@ -59,7 +63,9 @@ void main() {
       final selectedPlayer = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final otherPlayer = Player(1, 'other player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
-      final statsRepo = FakeStatsRepository([FakeStatsService.defaultStats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([FakeStatsService.defaultStats]);
+
       playerRepo.addPlayer(otherPlayer);
 
       final vm = MainViewModel(selectedPlayer, statsRepo, playerRepo, MockAppViewModel());
@@ -78,7 +84,8 @@ void main() {
       final otherPlayer = Player(1, 'other player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
       playerRepo.addPlayer(otherPlayer);
-      final statsRepo = FakeStatsRepository([FakeStatsService.defaultStats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([FakeStatsService.defaultStats]);
       final appVM = AppViewModel(playerRepo);
 
       final vm = MainViewModel(selectedPlayer, statsRepo, playerRepo, appVM);
@@ -96,7 +103,8 @@ void main() {
       final selectedPlayer = Player(0, 'player', 'avatar', GamingPlatform.xboxone);
       final playerRepo = FakePlayerRepository(selectedPlayer: selectedPlayer);
       final appVM = AppViewModel(playerRepo);
-      final statsRepo = FakeStatsRepository([FakeStatsService.defaultStats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([FakeStatsService.defaultStats]);
 
       final vm = MainViewModel(selectedPlayer, statsRepo, playerRepo, appVM);
       async.elapse(const Duration(milliseconds: 1));
@@ -112,7 +120,8 @@ void main() {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
       final stats = PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 100, deaths: 50);
-      final statsRepo = FakeStatsRepository([stats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([stats]);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsRepo, playerRepo, AppViewModel(playerRepo));
 
@@ -126,14 +135,15 @@ void main() {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
       final stats = PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 100, deaths: 50);
-      final statsRepo = FakeStatsRepository([stats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([stats]);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsRepo, playerRepo, AppViewModel(playerRepo));
 
       async.elapse(const Duration(milliseconds: 1));
       final updatedStats =
           PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 200, deaths: 100);
-      statsRepo.setValues([updatedStats]);
+      statsRepo.setPlayerStats([updatedStats]);
 
       vm.refresh();
       async.elapse(const Duration(milliseconds: 1));
@@ -147,7 +157,9 @@ void main() {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
       final stats = PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 100, deaths: 50);
 
-      final statsRepo = FakeStatsRepository([stats]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([stats]);
+
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsRepo, playerRepo, AppViewModel(playerRepo));
 
@@ -158,7 +170,7 @@ void main() {
         errors.add(event);
       });
 
-      statsRepo.setValues([null]);
+      statsRepo.setPlayerStats([null]);
 
       vm.refresh();
       async.elapse(const Duration(milliseconds: 1));
@@ -172,14 +184,15 @@ void main() {
   test('Should update stats after a successful retry', () {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
-      final statsRepo = FakeStatsRepository([null]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([null]);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsRepo, playerRepo, AppViewModel(playerRepo));
 
       async.elapse(const Duration(milliseconds: 1));
 
       final stats = PlayerStats(avatar: 'avatar', bestClass: 'assault', kills: 100, deaths: 50);
-      statsRepo.setValues([stats]);
+      statsRepo.setPlayerStats([stats]);
 
       vm.retry();
       async.elapse(const Duration(milliseconds: 1));
@@ -190,7 +203,8 @@ void main() {
   test('Should display error when retry fails', () {
     fakeAsync((async) {
       final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
-      final statsRepo = FakeStatsRepository([null]);
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setPlayerStats([null]);
       final playerRepo = FakePlayerRepository(selectedPlayer: player);
       final vm = MainViewModel(player, statsRepo, playerRepo, AppViewModel(playerRepo));
 

@@ -1,4 +1,4 @@
-import 'package:battlestats/common/utils/cast_utils.dart';
+import 'package:battlestats/common/utils/generic_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

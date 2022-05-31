@@ -1,4 +1,4 @@
-import 'package:battlestats/common/utils/cast_utils.dart';
+import 'package:battlestats/common/utils/generic_utils.dart';
 import 'package:battlestats/common/utils/string_extensions.dart';
 
 class VehicleStats {
@@ -60,4 +60,16 @@ class VehicleStats {
           '3.5hp',
         ],
       );
+
+  Map<String, dynamic> toJson() {
+    return {
+      "vehicleName": vehicleName,
+      "type": type,
+      "image": image,
+      "kills": kills,
+      "killsPerMinute": killsPerMinute,
+      "destroyed": destroyed,
+      "timeIn": timeIn,
+    };
+  }
 }

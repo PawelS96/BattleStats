@@ -1,4 +1,4 @@
-import 'package:battlestats/common/utils/cast_utils.dart';
+import 'package:battlestats/common/utils/generic_utils.dart';
 
 class WeaponStats {
   final String accuracy;
@@ -48,4 +48,21 @@ class WeaponStats {
   }
 
   int get starCount => kills ~/ 100;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "accuracy": accuracy,
+      "headshotKills": headshotKills,
+      "headshots": headshots,
+      "hitVKills": hitVKills,
+      "image": image,
+      "kills": kills,
+      "killsPerMinute": killsPerMinute,
+      "shotsFired": shotsFired,
+      "shotsHit": shotsHit,
+      "timeEquipped": timeEquipped,
+      "type": type,
+      "weaponName": weaponName,
+    };
+  }
 }

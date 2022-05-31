@@ -1,5 +1,6 @@
 import 'package:battlestats/data/local/preferences.dart';
-import 'package:battlestats/data/remote/stats_service.dart';
+import 'package:battlestats/data/repository/repository.dart';
+import 'package:battlestats/data/repository/stats_repository.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/vehicles/vehicle_sort_mode.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
@@ -9,17 +10,17 @@ import 'package:provider/provider.dart';
 
 class VehiclesViewModel with ChangeNotifier {
   final Player _player;
-  final StatsService _service;
+  final StatsRepository _repository;
   final Preferences _preferences;
 
-  VehiclesViewModel(this._player, this._service, this._preferences) {
+  VehiclesViewModel(this._player, this._repository, this._preferences) {
     _loadData();
   }
 
   factory VehiclesViewModel.of(BuildContext context, Player player) {
     return VehiclesViewModel(
       player,
-      context.read<StatsService>(),
+      context.read<StatsRepository>(),
       context.read<Preferences>(),
     );
   }
@@ -32,25 +33,27 @@ class VehiclesViewModel with ChangeNotifier {
 
   void _loadData() async {
     sortMode = await _preferences.getVehiclesSortMode() ?? VehicleSortMode.kills;
-    final response = await _service.getVehicleStats(_player.name, _player.platform);
-    _allVehicles = response ?? [];
-    vehicles = _allVehicles.toList();
-    selectedVehicleTypes = vehicleTypes;
-    _filterItems();
-    _sortItems(sortMode);
-    isLoading = false;
-    notifyListeners();
+    _repository.getVehicleStats(_player).listen((data) {
+      _allVehicles = data ?? [];
+      vehicles = _allVehicles.toList();
+      selectedVehicleTypes = vehicleTypes;
+      _filterItems();
+      _sortItems(sortMode);
+      isLoading = false;
+      notifyListeners();
+    });
   }
 
   Future<void> refresh() async {
-    final response = await _service.getVehicleStats(_player.name, _player.platform);
-    if (response != null) {
-      _allVehicles = response ?? [];
-      vehicles = _allVehicles.toList();
-      _filterItems();
-      _sortItems(sortMode);
-      notifyListeners();
-    }
+    _repository.getVehicleStats(_player, accessType: DataAccessType.onlyRemote).listen((data) {
+      if (data != null) {
+        _allVehicles = data;
+        vehicles = _allVehicles.toList();
+        _filterItems();
+        _sortItems(sortMode);
+        notifyListeners();
+      }
+    });
   }
 
   void onSortModeClicked(VehicleSortMode mode) {

@@ -5,10 +5,8 @@ import 'package:battlestats/models/weapons/weapon_stats.dart';
 import 'package:battlestats/screens/weapons/weapons_viewmodel.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
 import 'common/fakes.dart';
-import 'common/mocks.dart';
 
 void main() {
   final player = Player(0, 'name', 'avatar', GamingPlatform.ps4);
@@ -31,11 +29,10 @@ void main() {
   test('Should sort correctly and save sort mode to preferences', () {
     fakeAsync((async) async {
       final preferences = FakePreferences();
-      final statsService = MockStatsService();
-      when(() => statsService.getWeaponStats(player.name, player.platform))
-          .thenAnswer((_) => Future.value(weaponsResponse));
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setWeaponsStats([weaponsResponse]);
 
-      final vm = WeaponsViewModel(player, statsService, preferences);
+      final vm = WeaponsViewModel(player, statsRepo, preferences);
       async.elapse(const Duration(milliseconds: 1));
       expect(vm.weapons, weaponsNotSorted);
 
@@ -50,11 +47,10 @@ void main() {
 
   test('All weapon types should be enabled by default and sorted alphabetically', () {
     fakeAsync((async) async {
-      final statsService = MockStatsService();
-      when(() => statsService.getWeaponStats(player.name, player.platform))
-          .thenAnswer((_) => Future.value(weaponsResponse));
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setWeaponsStats([weaponsResponse]);
 
-      final vm = WeaponsViewModel(player, statsService, FakePreferences());
+      final vm = WeaponsViewModel(player, statsRepo, FakePreferences());
       async.elapse(const Duration(milliseconds: 1));
 
       expect(vm.selectedWeaponTypes, [weapon2.type, weapon1.type, weapon3.type]);
@@ -63,11 +59,10 @@ void main() {
 
   test('Should filter correctly and keep sort order', () {
     fakeAsync((async) async {
-      final statsService = MockStatsService();
-      when(() => statsService.getWeaponStats(player.name, player.platform))
-          .thenAnswer((_) => Future.value(weaponsResponse));
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setWeaponsStats([weaponsResponse]);
 
-      final vm = WeaponsViewModel(player, statsService, FakePreferences());
+      final vm = WeaponsViewModel(player, statsRepo, FakePreferences());
       async.elapse(const Duration(milliseconds: 1));
 
       const sortMode = WeaponSortMode.time;
@@ -94,15 +89,13 @@ void main() {
 
   test('Failed refresh should not replace already loaded data with null', () {
     fakeAsync((async) async {
-      final statsService = MockStatsService();
-      when(() => statsService.getWeaponStats(player.name, player.platform))
-          .thenAnswer((_) => Future.value(weaponsResponse));
+      final statsRepo = FakeStatsRepository();
+      statsRepo.setWeaponsStats([weaponsResponse]);
 
-      final vm = WeaponsViewModel(player, statsService, FakePreferences());
+      final vm = WeaponsViewModel(player, statsRepo, FakePreferences());
       async.elapse(const Duration(milliseconds: 1));
 
-      when(() => statsService.getWeaponStats(player.name, player.platform))
-          .thenAnswer((_) => Future.value(null));
+      statsRepo.setWeaponsStats([null]);
 
       await vm.refresh();
 

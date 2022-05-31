@@ -106,12 +106,27 @@ class FakePreferences implements Preferences {
 }
 
 class FakeStatsRepository implements StatsRepository {
-  List<PlayerStats?> values;
+  var playerStats = <PlayerStats?>[];
+  var weaponStats = <List<WeaponStats>?>[];
+  var vehicleStats = <List<VehicleStats>?>[];
+  var classStats = <List<ClassStats>?>[];
 
-  FakeStatsRepository(this.values);
+  FakeStatsRepository();
 
-  void setValues(List<PlayerStats?> newValues) {
-    values = newValues.toList();
+  void setPlayerStats(List<PlayerStats?> newValues) {
+    playerStats = newValues.toList();
+  }
+
+  void setWeaponsStats(List<List<WeaponStats>?> newValues) {
+    weaponStats = newValues.toList();
+  }
+
+  void setVehiclesStats(List<List<VehicleStats>?> newValues) {
+    vehicleStats = newValues.toList();
+  }
+
+  void setClassStats(List<List<ClassStats>?> newValues) {
+    classStats = newValues.toList();
   }
 
   @override
@@ -119,6 +134,30 @@ class FakeStatsRepository implements StatsRepository {
     Player player, {
     DataAccessType accessType = DataAccessType.localAndRemote,
   }) {
-    return Stream.fromIterable(values);
+    return Stream.fromIterable(playerStats);
+  }
+
+  @override
+  Stream<List<ClassStats>?> getClassStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return Stream.fromIterable(classStats);
+  }
+
+  @override
+  Stream<List<VehicleStats>?> getVehicleStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return Stream.fromIterable(vehicleStats);
+  }
+
+  @override
+  Stream<List<WeaponStats>?> getWeaponStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return Stream.fromIterable(weaponStats);
   }
 }

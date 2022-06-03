@@ -2,6 +2,7 @@ import 'package:battlestats/data/local/stats_cache.dart';
 import 'package:battlestats/data/remote/stats_service.dart';
 import 'package:battlestats/data/repository/repository.dart';
 import 'package:battlestats/models/classes/class_stats.dart';
+import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
@@ -24,6 +25,11 @@ abstract class StatsRepository {
   });
 
   Stream<List<ClassStats>?> getClassStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  });
+
+  Stream<List<GameModeStats>?> getGameModeStats(
     Player player, {
     DataAccessType accessType = DataAccessType.localAndRemote,
   });
@@ -90,7 +96,20 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
   }
 
   @override
+  Stream<List<GameModeStats>?> getGameModeStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return fetchAndCache(
+      accessType: accessType,
+      getFromCache: () => _cache.getGameModeStats(player),
+      saveToCache: (stats) => _cache.setGameModeStats(player, stats),
+      getFromWeb: () => _service.getGameModeStats(player.name, player.platform),
+    );
+  }
+
+  @override
   Future<void> clearCache(Player player) {
-   return _cache.clearCache(player);
+    return _cache.clearCache(player);
   }
 }

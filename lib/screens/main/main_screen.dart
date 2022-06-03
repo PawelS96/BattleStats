@@ -13,6 +13,8 @@ import 'package:battlestats/screens/add_player/add_player_screen.dart';
 import 'package:battlestats/screens/classes/classes_screen.dart';
 import 'package:battlestats/screens/classes/classes_viewmodel.dart';
 import 'package:battlestats/screens/detailed_stats/detailed_stats_screen.dart';
+import 'package:battlestats/screens/game_modes/game_,modes_screen.dart';
+import 'package:battlestats/screens/game_modes/game_modes_viewmodel.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
 import 'package:battlestats/screens/vehicles/vehicles_screen.dart';
@@ -40,6 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   late WeaponsViewModel weaponsVM;
   late VehiclesViewModel vehiclesVM;
   late ClassesViewModel classesVM;
+  late GameModesViewModel gameModesVM;
 
   late StreamSubscription<String> errorSub;
 
@@ -50,6 +53,8 @@ class _MainScreenState extends State<MainScreen> {
     weaponsVM = WeaponsViewModel.of(context, widget.player);
     vehiclesVM = VehiclesViewModel.of(context, widget.player);
     classesVM = ClassesViewModel.of(context, widget.player);
+    gameModesVM = GameModesViewModel.of(context, widget.player);
+
     errorSub = vm.errors.listen((msg) => showSnackBarMessage(context, msg));
   }
 
@@ -94,6 +99,10 @@ class _MainScreenState extends State<MainScreen> {
       NavButton(
         text: 'Classes',
         onClick: _showClasses,
+      ),
+      NavButton(
+        text: 'Game modes',
+        onClick: _showGameModes,
       ),
     ];
   }
@@ -267,9 +276,7 @@ class _MainScreenState extends State<MainScreen> {
     required String title,
     required dynamic value,
   }) {
-    return Flexible(
-      child: StatsText(title: title, value: value.toString())
-    );
+    return Flexible(child: StatsText(title: title, value: value.toString()));
   }
 
   void _showDetailedStats(PlayerStats stats) {
@@ -315,6 +322,19 @@ class _MainScreenState extends State<MainScreen> {
         builder: (ctx) => ChangeNotifierProvider.value(
           value: classesVM,
           child: const ClassesScreen(),
+        ),
+      ),
+    );
+  }
+
+  void _showGameModes() {
+    gameModesVM.refresh();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => ChangeNotifierProvider.value(
+          value: gameModesVM,
+          child: const GameModesScreen(),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:battlestats/data/remote/stats_service.dart';
 import 'package:battlestats/data/repository/repository.dart';
 import 'package:battlestats/data/repository/stats_repository.dart';
 import 'package:battlestats/models/classes/class_stats.dart';
+import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
@@ -56,8 +57,15 @@ class FakeStatsService implements StatsService {
   final List<WeaponStats>? weaponStats;
   final List<VehicleStats>? vehicleStats;
   final List<ClassStats>? classStats;
+  final List<GameModeStats>? gameModeStats;
 
-  FakeStatsService({this.stats, this.weaponStats, this.vehicleStats, this.classStats});
+  FakeStatsService({
+    this.stats,
+    this.weaponStats,
+    this.vehicleStats,
+    this.classStats,
+    this.gameModeStats,
+  });
 
   @override
   Future<PlayerStats?> getPlayerStats(String playerName, GamingPlatform platform) async {
@@ -77,6 +85,11 @@ class FakeStatsService implements StatsService {
   @override
   Future<List<ClassStats>?> getClassStats(String playerName, GamingPlatform platform) async {
     return classStats;
+  }
+
+  @override
+  Future<List<GameModeStats>?> getGameModeStats(String playerName, GamingPlatform platform) async {
+    return gameModeStats;
   }
 }
 
@@ -110,6 +123,7 @@ class FakeStatsRepository implements StatsRepository {
   var weaponStats = <List<WeaponStats>?>[];
   var vehicleStats = <List<VehicleStats>?>[];
   var classStats = <List<ClassStats>?>[];
+  var gameModeStats = <List<GameModeStats>?>[];
 
   FakeStatsRepository();
 
@@ -127,6 +141,10 @@ class FakeStatsRepository implements StatsRepository {
 
   void setClassStats(List<List<ClassStats>?> newValues) {
     classStats = newValues.toList();
+  }
+
+  void setGameModeStats(List<List<GameModeStats>?> newValues) {
+    gameModeStats = newValues.toList();
   }
 
   @override
@@ -162,7 +180,20 @@ class FakeStatsRepository implements StatsRepository {
   }
 
   @override
+  Stream<List<GameModeStats>?> getGameModeStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return Stream.fromIterable(gameModeStats);
+  }
+
+  @override
   Future<void> clearCache(Player player) {
+    playerStats = [];
+    weaponStats = [];
+    vehicleStats = [];
+    classStats = [];
+    gameModeStats = [];
     return Future.value(null);
   }
 }

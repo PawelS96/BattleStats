@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:battlestats/common/utils/generic_utils.dart';
 import 'package:battlestats/models/classes/class_stats.dart';
+import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
@@ -54,6 +55,14 @@ class StatsCache {
     return _getList(_getClassStatsKey(player), ClassStats.fromJson);
   }
 
+  Future<void> setGameModeStats(Player player, List<GameModeStats> stats) async {
+    _setList<GameModeStats>(stats, _getGameModeStatsKey(player), (stats) => stats.toJson());
+  }
+
+  Future<List<GameModeStats>?> getGameModeStats(Player player) async {
+    return _getList(_getGameModeStatsKey(player), GameModeStats.fromJson);
+  }
+
   Future<void> clearCache(Player player) async {
     final sp = await SharedPreferences.getInstance();
     final keys = [
@@ -61,6 +70,7 @@ class StatsCache {
       _getVehiclesStatsKey(player),
       _getWeaponStatsKey(player),
       _getClassStatsKey(player),
+      _getGameModeStatsKey(player),
     ];
 
     for (var key in keys) {
@@ -108,6 +118,8 @@ class StatsCache {
   String _getWeaponStatsKey(Player player) => _getKey(player, 'weaponStats');
 
   String _getClassStatsKey(Player player) => _getKey(player, 'classStats');
+
+  String _getGameModeStatsKey(Player player) => _getKey(player, 'gameModeStats');
 
   String _getKey(Player player, String suffix) {
     return '${player.name}_${player.platform.name}_$suffix';

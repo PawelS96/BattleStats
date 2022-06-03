@@ -1,6 +1,8 @@
 import 'package:battlestats/data/remote/network_client.dart';
 import 'package:battlestats/models/classes/class_stats.dart';
 import 'package:battlestats/models/classes/class_stats_response.dart';
+import 'package:battlestats/models/game_modes/game_mode_stats.dart';
+import 'package:battlestats/models/game_modes/game_mode_stats_response.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
@@ -88,6 +90,26 @@ class StatsService {
 
     try {
       return ClassStatsResponse.fromJson(response).classes;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<GameModeStats>?> getGameModeStats(String playerName, GamingPlatform platform) async {
+    final response = await _api.sendRequest(
+      'gamemode',
+      {
+        'name': playerName,
+        'platform': platform.name,
+      },
+    );
+
+    if (response is Map && response.containsKey('errors')) {
+      return null;
+    }
+
+    try {
+      return GameModeStatsResponse.fromJson(response).gameModes;
     } catch (e) {
       return null;
     }

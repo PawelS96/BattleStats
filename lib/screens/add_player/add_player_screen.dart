@@ -28,6 +28,7 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
   final _node = FocusNode();
 
   var _platform = GamingPlatform.pc;
+  var _validationMode = AutovalidateMode.disabled;
 
   late AddPlayerViewModel vm;
 
@@ -154,6 +155,7 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
     const borderRadius = 15.0;
     return Form(
       key: _formKey,
+      autovalidateMode: _validationMode,
       child: TextFormField(
         controller: _nameController,
         focusNode: _node,
@@ -236,6 +238,12 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
     if (_formKey.currentState?.validate() == true) {
       final playerName = _nameController.text;
       vm.addPlayer(playerName, _platform);
+    }
+
+    if (_validationMode == AutovalidateMode.disabled) {
+      setState(() {
+        _validationMode = AutovalidateMode.onUserInteraction;
+      });
     }
   }
 }

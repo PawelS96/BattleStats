@@ -15,10 +15,7 @@ class VehiclesFilterScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Vehicle types'.toUpperCase()),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: const Text('Vehicle types'),
       ),
       body: Stack(
         children: [

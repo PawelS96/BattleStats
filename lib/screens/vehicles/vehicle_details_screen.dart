@@ -16,10 +16,7 @@ class VehicleDetailsScreen extends StatelessWidget {
     final isLandscape = screenSize.width > screenSize.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: AppBar(),
       body: Stack(
         children: [
           const BackgroundImage(),

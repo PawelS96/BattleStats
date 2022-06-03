@@ -39,8 +39,12 @@ class BattleStatsApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Battlestats',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+              primarySwatch: Colors.blue,
+              appBarTheme: const AppBarTheme(
+                centerTitle: true,
+                elevation: 0,
+                color: Colors.transparent,
+              )),
           debugShowCheckedModeBanner: false,
           home: Consumer<AppViewModel>(
             builder: (ctx, vm, _) => vm.state.map<Widget>(

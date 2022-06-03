@@ -15,10 +15,7 @@ class GameModesScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        title: const Text('GAME MODES'),
+        title: const Text('Game Modes'),
       ),
       body: Stack(
         children: [

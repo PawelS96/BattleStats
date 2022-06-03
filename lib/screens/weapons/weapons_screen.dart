@@ -19,10 +19,7 @@ class WeaponsScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text('Weapons'.toUpperCase()),
-          elevation: 0,
-          centerTitle: true,
+          title: const Text('Weapons'),
           actions: [
             MaterialButton(
               onPressed: () => _showFilters(context, vm),

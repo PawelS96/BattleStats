@@ -17,10 +17,7 @@ class ClassesScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('CLASSES'),
+        title: const Text('Classes'),
       ),
       body: Stack(
         children: [

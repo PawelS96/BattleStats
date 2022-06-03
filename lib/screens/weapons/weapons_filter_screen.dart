@@ -16,10 +16,7 @@ class WeaponFilterScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Weapon types'.toUpperCase()),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: const Text('Weapon types'),
       ),
       body: Stack(
         children: [

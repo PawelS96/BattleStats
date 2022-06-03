@@ -89,10 +89,7 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
+        appBar: AppBar(),
         body: Consumer<AddPlayerViewModel>(
           builder: (ctx, vm, _) => Stack(
             children: [

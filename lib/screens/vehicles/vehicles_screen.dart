@@ -19,10 +19,7 @@ class VehiclesScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text('Vehicles'.toUpperCase()),
-          elevation: 0,
-          centerTitle: true,
+          title: const Text('Vehicles'),
           actions: [
             MaterialButton(
               onPressed: () => _showFilters(context, vm),

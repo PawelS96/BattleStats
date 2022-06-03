@@ -41,6 +41,19 @@ class ClassesViewModel with ChangeNotifier {
     });
   }
 
+  Future<void> retry() async {
+    isLoading = true;
+    notifyListeners();
+    _repository.getClassStats(_player).listen((data) {
+      if (data != null) {
+        classes = data;
+        _sort();
+      }
+      isLoading = false;
+      notifyListeners();
+    });
+  }
+
   void _sort() {
     classes.sort((a, b) => b.score.compareTo(a.score));
   }

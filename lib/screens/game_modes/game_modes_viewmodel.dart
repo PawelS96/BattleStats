@@ -41,6 +41,19 @@ class GameModesViewModel with ChangeNotifier {
     });
   }
 
+  Future<void> retry() async {
+    isLoading = true;
+    notifyListeners();
+    _repository.getGameModeStats(_player).listen((data) {
+      if (data != null) {
+        gameModes = data;
+        _sortAndFilter();
+      }
+      isLoading = false;
+      notifyListeners();
+    });
+  }
+
   void _sortAndFilter() {
     // removing Shock Operations because API gives the same values as in Operations
     gameModes.removeWhere((e) => e.gameModeName.toLowerCase().contains('shock'));

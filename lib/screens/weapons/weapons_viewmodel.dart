@@ -30,14 +30,12 @@ class WeaponsViewModel with ChangeNotifier {
   var sortMode = WeaponSortMode.kills;
   var selectedWeaponTypes = <String>[];
 
+  bool get isError => !isLoading && _allWeapons.isEmpty;
+
   void _loadData() async {
     sortMode = await _preferences.getWeaponsSortMode() ?? WeaponSortMode.kills;
     _repository.getWeaponStats(_player).listen((data) {
-      _allWeapons = data ?? [];
-      weapons = _allWeapons.toList();
-      selectedWeaponTypes = weaponTypes;
-      _filterItems();
-      _sortItems(sortMode);
+      _onDataLoaded(data ?? []);
       isLoading = false;
       notifyListeners();
     });
@@ -46,13 +44,35 @@ class WeaponsViewModel with ChangeNotifier {
   Future<void> refresh() async {
     _repository.getWeaponStats(_player, accessType: DataAccessType.onlyRemote).listen((data) {
       if (data != null) {
-        _allWeapons = data;
-        weapons = _allWeapons.toList();
-        _filterItems();
-        _sortItems(sortMode);
+        _onDataLoaded(data);
         notifyListeners();
       }
     });
+  }
+
+  Future<void> retry() async {
+    isLoading = true;
+    notifyListeners();
+    _repository.getWeaponStats(_player).listen((data) {
+      if (data != null) {
+        _onDataLoaded(data);
+      }
+      isLoading = false;
+      notifyListeners();
+    });
+  }
+
+  void _onDataLoaded(List<WeaponStats> newData) {
+    final isEmpty = _allWeapons.isEmpty;
+    _allWeapons = newData;
+    weapons = _allWeapons.toList();
+
+    if (isEmpty) {
+      selectedWeaponTypes = weaponTypes;
+    }
+
+    _filterItems();
+    _sortItems(sortMode);
   }
 
   void onSortModeClicked(WeaponSortMode mode) {

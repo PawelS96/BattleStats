@@ -6,6 +6,7 @@ import 'package:battlestats/common/utils/snackbar_util.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/nav_button.dart';
+import 'package:battlestats/common/widgets/retry_button.dart';
 import 'package:battlestats/common/widgets/stats_text.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
@@ -129,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             _header(),
             const Spacer(),
-            _error(),
+            RetryButton(onClick: vm.retry),
             const Spacer(),
           ],
         ),
@@ -150,33 +151,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _error() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        const Text(
-          'Something went wrong',
-          style: TextStyle(color: AppColors.textPrimary, fontSize: 18),
-        ),
-        const SizedBox(height: 8),
-        MaterialButton(
-          onPressed: vm.retry,
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 2, color: Colors.white),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: const Text(
-            'Try again',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ),
-      ],
     );
   }
 

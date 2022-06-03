@@ -31,14 +31,12 @@ class VehiclesViewModel with ChangeNotifier {
   var sortMode = VehicleSortMode.kills;
   var selectedVehicleTypes = <String>[];
 
+  bool get isError => !isLoading && _allVehicles.isEmpty;
+
   void _loadData() async {
     sortMode = await _preferences.getVehiclesSortMode() ?? VehicleSortMode.kills;
     _repository.getVehicleStats(_player).listen((data) {
-      _allVehicles = data ?? [];
-      vehicles = _allVehicles.toList();
-      selectedVehicleTypes = vehicleTypes;
-      _filterItems();
-      _sortItems(sortMode);
+      _onDataLoaded(data ?? []);
       isLoading = false;
       notifyListeners();
     });
@@ -47,13 +45,35 @@ class VehiclesViewModel with ChangeNotifier {
   Future<void> refresh() async {
     _repository.getVehicleStats(_player, accessType: DataAccessType.onlyRemote).listen((data) {
       if (data != null) {
-        _allVehicles = data;
-        vehicles = _allVehicles.toList();
-        _filterItems();
-        _sortItems(sortMode);
+        _onDataLoaded(data);
         notifyListeners();
       }
     });
+  }
+
+  Future<void> retry() async {
+    isLoading = true;
+    notifyListeners();
+    _repository.getVehicleStats(_player).listen((data) {
+      if (data != null) {
+        _onDataLoaded(data);
+      }
+      isLoading = false;
+      notifyListeners();
+    });
+  }
+
+  void _onDataLoaded(List<VehicleStats> newData) {
+    final isEmpty = _allVehicles.isEmpty;
+    _allVehicles = newData;
+    vehicles = _allVehicles.toList();
+
+    if (isEmpty) {
+      selectedVehicleTypes = vehicleTypes;
+    }
+
+    _filterItems();
+    _sortItems(sortMode);
   }
 
   void onSortModeClicked(VehicleSortMode mode) {

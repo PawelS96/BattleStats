@@ -7,3 +7,10 @@ void showSnackBarMessage(BuildContext context, String message) {
     ),
   );
 }
+
+extension BuildContextExt on BuildContext {
+  bool get isLandscape {
+    final screenSize = MediaQuery.of(this).size;
+    return screenSize.width > screenSize.height;
+  }
+}

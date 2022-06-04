@@ -1,5 +1,6 @@
 import 'package:battlestats/common/contants/app_colors.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
+import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/retry_button.dart';
 import 'package:battlestats/common/widgets/stats_text.dart';
@@ -13,8 +14,6 @@ class ClassesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isLandscape = screenSize.width > screenSize.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -66,7 +65,7 @@ class ClassesScreen extends StatelessWidget {
                           sliver: SliverGrid(
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               mainAxisExtent: 90,
-                              crossAxisCount: isLandscape ? 4 : 2,
+                              crossAxisCount: context.isLandscape ? 4 : 2,
                               mainAxisSpacing: 10.0,
                               crossAxisSpacing: 10.0,
                             ),

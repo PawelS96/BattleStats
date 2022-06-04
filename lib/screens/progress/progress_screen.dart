@@ -1,3 +1,4 @@
+import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/retry_button.dart';
 import 'package:battlestats/common/widgets/stats_text.dart';
@@ -11,8 +12,6 @@ class ProgressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isLandscape = screenSize.width > screenSize.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -47,7 +46,7 @@ class ProgressScreen extends StatelessWidget {
                             minHeight: constraints.maxHeight,
                             minWidth: constraints.maxWidth,
                           ),
-                          child: isLandscape
+                          child: context.isLandscape
                               ? Center(
                                   child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

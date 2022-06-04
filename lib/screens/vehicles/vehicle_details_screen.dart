@@ -1,4 +1,5 @@
 import 'package:battlestats/common/utils/text_formatter.dart';
+import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/stats_text.dart';
 import 'package:battlestats/common/widgets/weapon_header.dart';
@@ -12,8 +13,7 @@ class VehicleDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final isLandscape = screenSize.width > screenSize.height;
+    final isLandscape = context.isLandscape;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(),

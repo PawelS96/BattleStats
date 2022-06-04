@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:battlestats/app/app_viewmodel.dart';
 import 'package:battlestats/common/contants/app_colors.dart';
-import 'package:battlestats/common/utils/snackbar_util.dart';
+import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/nav_button.dart';

@@ -18,6 +18,8 @@ import 'package:battlestats/screens/game_modes/game_,modes_screen.dart';
 import 'package:battlestats/screens/game_modes/game_modes_viewmodel.dart';
 import 'package:battlestats/screens/main/main_viewmodel.dart';
 import 'package:battlestats/screens/main/player_list_item.dart';
+import 'package:battlestats/screens/progress/progress_screen.dart';
+import 'package:battlestats/screens/progress/progress_viewmodel.dart';
 import 'package:battlestats/screens/vehicles/vehicles_screen.dart';
 import 'package:battlestats/screens/vehicles/vehicles_viewmodel.dart';
 import 'package:battlestats/screens/weapons/weapons_screen.dart';
@@ -44,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
   late VehiclesViewModel vehiclesVM;
   late ClassesViewModel classesVM;
   late GameModesViewModel gameModesVM;
+  late ProgressViewModel progressVM;
 
   late StreamSubscription<String> errorSub;
 
@@ -55,6 +58,7 @@ class _MainScreenState extends State<MainScreen> {
     vehiclesVM = VehiclesViewModel.of(context, widget.player);
     classesVM = ClassesViewModel.of(context, widget.player);
     gameModesVM = GameModesViewModel.of(context, widget.player);
+    progressVM = ProgressViewModel.of(context, widget.player);
 
     errorSub = vm.errors.listen((msg) => showSnackBarMessage(context, msg));
   }
@@ -104,6 +108,10 @@ class _MainScreenState extends State<MainScreen> {
       NavButton(
         text: 'Game modes',
         onClick: _showGameModes,
+      ),
+      NavButton(
+        text: 'Progress',
+        onClick: _showProgress,
       ),
     ];
   }
@@ -313,6 +321,20 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  void _showProgress() {
+    progressVM.refresh();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => ChangeNotifierProvider.value(
+          value: progressVM,
+          child: const ProgressScreen(),
+        ),
+      ),
+    );
+  }
+
 
   void _showAddPlayer() {
     Navigator.push(

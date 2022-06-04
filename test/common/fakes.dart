@@ -8,6 +8,7 @@ import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/progress/progress_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_sort_mode.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
 import 'package:battlestats/models/weapons/weapon_sort_mode.dart';
@@ -58,6 +59,7 @@ class FakeStatsService implements StatsService {
   final List<VehicleStats>? vehicleStats;
   final List<ClassStats>? classStats;
   final List<GameModeStats>? gameModeStats;
+  final List<ProgressStats>? progressStats;
 
   FakeStatsService({
     this.stats,
@@ -65,6 +67,7 @@ class FakeStatsService implements StatsService {
     this.vehicleStats,
     this.classStats,
     this.gameModeStats,
+    this.progressStats,
   });
 
   @override
@@ -90,6 +93,11 @@ class FakeStatsService implements StatsService {
   @override
   Future<List<GameModeStats>?> getGameModeStats(String playerName, GamingPlatform platform) async {
     return gameModeStats;
+  }
+
+  @override
+  Future<List<ProgressStats>?> getProgressStats(String playerName, GamingPlatform platform) async {
+    return progressStats;
   }
 }
 
@@ -124,6 +132,7 @@ class FakeStatsRepository implements StatsRepository {
   var vehicleStats = <List<VehicleStats>?>[];
   var classStats = <List<ClassStats>?>[];
   var gameModeStats = <List<GameModeStats>?>[];
+  var progressStats = <List<ProgressStats>?>[];
 
   FakeStatsRepository();
 
@@ -145,6 +154,10 @@ class FakeStatsRepository implements StatsRepository {
 
   void setGameModeStats(List<List<GameModeStats>?> newValues) {
     gameModeStats = newValues.toList();
+  }
+
+  void setProgressStats(List<List<ProgressStats>?> newValues) {
+    progressStats = newValues.toList();
   }
 
   @override
@@ -188,12 +201,22 @@ class FakeStatsRepository implements StatsRepository {
   }
 
   @override
+  Stream<List<ProgressStats>?> getProgressStats(
+      Player player, {
+        DataAccessType accessType = DataAccessType.localAndRemote,
+      }) {
+    return Stream.fromIterable(progressStats);
+  }
+
+
+  @override
   Future<void> clearCache(Player player) {
     playerStats = [];
     weaponStats = [];
     vehicleStats = [];
     classStats = [];
     gameModeStats = [];
+    progressStats = [];
     return Future.value(null);
   }
 }

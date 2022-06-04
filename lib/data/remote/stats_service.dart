@@ -5,6 +5,8 @@ import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/game_modes/game_mode_stats_response.dart';
 import 'package:battlestats/models/player/platform.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/progress/progress_stats.dart';
+import 'package:battlestats/models/progress/progress_stats_response.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats_response.dart';
 import 'package:battlestats/models/weapons/weapon_stats.dart';
@@ -110,6 +112,26 @@ class StatsService {
 
     try {
       return GameModeStatsResponse.fromJson(response).gameModes;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<ProgressStats>?> getProgressStats(String playerName, GamingPlatform platform) async {
+    final response = await _api.sendRequest(
+      'progress',
+      {
+        'name': playerName,
+        'platform': platform.name,
+      },
+    );
+
+    if (response is Map && response.containsKey('errors')) {
+      return null;
+    }
+
+    try {
+      return ProgressStatsResponse.fromJson(response).progress;
     } catch (e) {
       return null;
     }

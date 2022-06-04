@@ -5,6 +5,7 @@ import 'package:battlestats/models/classes/class_stats.dart';
 import 'package:battlestats/models/game_modes/game_mode_stats.dart';
 import 'package:battlestats/models/player/player.dart';
 import 'package:battlestats/models/player/player_stats.dart';
+import 'package:battlestats/models/progress/progress_stats.dart';
 import 'package:battlestats/models/vehicles/vehicle_stats.dart';
 import 'package:battlestats/models/weapons/weapon_stats.dart';
 
@@ -30,6 +31,11 @@ abstract class StatsRepository {
   });
 
   Stream<List<GameModeStats>?> getGameModeStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  });
+
+  Stream<List<ProgressStats>?> getProgressStats(
     Player player, {
     DataAccessType accessType = DataAccessType.localAndRemote,
   });
@@ -105,6 +111,19 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       getFromCache: () => _cache.getGameModeStats(player),
       saveToCache: (stats) => _cache.setGameModeStats(player, stats),
       getFromWeb: () => _service.getGameModeStats(player.name, player.platform),
+    );
+  }
+
+  @override
+  Stream<List<ProgressStats>?> getProgressStats(
+    Player player, {
+    DataAccessType accessType = DataAccessType.localAndRemote,
+  }) {
+    return fetchAndCache(
+      accessType: accessType,
+      getFromCache: () => _cache.getProgressStats(player),
+      saveToCache: (stats) => _cache.setProgressStats(player, stats),
+      getFromWeb: () => _service.getProgressStats(player.name, player.platform),
     );
   }
 

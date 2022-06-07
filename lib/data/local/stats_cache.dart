@@ -33,7 +33,7 @@ class StatsCache {
   }
 
   Future<List<WeaponStats>?> getWeaponStats(Player player) async {
-    return _getList(_getClassStatsKey(player), WeaponStats.fromJson);
+    return _getList(_getWeaponStatsKey(player), WeaponStats.fromJson);
   }
 
   Future<void> setWeaponStats(Player player, List<WeaponStats> stats) async {
@@ -65,7 +65,7 @@ class StatsCache {
   }
 
   Future<void> setProgressStats(Player player, List<ProgressStats> stats) async {
-    _setList<ProgressStats>(stats, _getGameModeStatsKey(player), (stats) => stats.toJson());
+    _setList<ProgressStats>(stats, _getProgressStatsKey(player), (stats) => stats.toJson());
   }
 
   Future<List<ProgressStats>?> getProgressStats(Player player) async {

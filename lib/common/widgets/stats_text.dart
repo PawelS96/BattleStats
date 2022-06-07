@@ -15,11 +15,13 @@ class StatsText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            color: AppColors.textSecondary,
+        FittedBox(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppColors.textSecondary,
+            ),
           ),
         ),
         const SizedBox(height: 8),

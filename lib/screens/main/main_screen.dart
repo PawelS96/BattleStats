@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:battlestats/app/app_viewmodel.dart';
 import 'package:battlestats/common/contants/app_colors.dart';
-import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/utils/text_formatter.dart';
+import 'package:battlestats/common/utils/ui_utils.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/common/widgets/nav_button.dart';
 import 'package:battlestats/common/widgets/retry_button.dart';
@@ -222,33 +222,60 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _stats(PlayerStats stats) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 600),
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
+        child: LayoutBuilder(
+          builder: (ctx, constraints) {
+            final itemWidth = constraints.maxWidth / 3;
+            return Column(
               children: [
-                _statsText(title: 'SCORE/MIN', value: stats.scorePerMinute?.toInt() ?? 0),
-                _statsText(title: 'WINS', value: stats.winPercent ?? '0%'),
-                _statsText(title: 'KILLS', value: stats.kills ?? 0),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      width: itemWidth,
+                      child:
+                          _statsText(title: 'SCORE/MIN', value: stats.scorePerMinute?.toInt() ?? 0),
+                    ),
+                    SizedBox(
+                      width: itemWidth,
+                      child: _statsText(title: 'WINS', value: stats.winPercent ?? '0%'),
+                    ),
+                    SizedBox(
+                      width: itemWidth,
+                      child: _statsText(title: 'KILLS', value: stats.kills ?? 0),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(
+                      width: itemWidth,
+                      child: _statsText(title: 'KILLS/MIN', value: stats.killsPerMinute ?? 0),
+                    ),
+                    SizedBox(
+                      width: itemWidth,
+                      child: _statsText(
+                        title: 'TIME',
+                        value: formatTime((stats.secondsPlayed ?? 0) * 1000),
+                      ),
+                    ),
+                    SizedBox(
+                      width: itemWidth,
+                      child: _statsText(title: 'DEATHS', value: stats.deaths ?? 0),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
               ],
-            ),
-            const SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _statsText(title: 'KILLS/MIN', value: stats.killsPerMinute ?? 0),
-                _statsText(title: 'TIME', value: formatTime((stats.secondsPlayed ?? 0) * 1000)),
-                _statsText(title: 'DEATHS', value: stats.deaths ?? 0),
-              ],
-            ),
-            const SizedBox(height: 40),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -334,7 +361,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
 
   void _showAddPlayer() {
     Navigator.push(

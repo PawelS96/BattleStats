@@ -285,7 +285,7 @@ class _MainScreenState extends State<MainScreen> {
     required String title,
     required dynamic value,
   }) {
-    return Flexible(child: StatsText(title: title, value: value.toString()));
+    return StatsText(title: title, value: value.toString());
   }
 
   void _showDetailedStats(PlayerStats stats) {

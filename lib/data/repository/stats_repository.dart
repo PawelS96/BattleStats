@@ -58,7 +58,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getPlayerStats(player),
       saveToCache: (stats) => _cache.setPlayerStats(player, stats),
-      getFromWeb: () => _service.getPlayerStats(player.name, player.platform),
+      getFromWeb: () => _service.getPlayerStats(player.id, player.platform),
     );
   }
 
@@ -71,7 +71,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getWeaponStats(player),
       saveToCache: (stats) => _cache.setWeaponStats(player, stats),
-      getFromWeb: () => _service.getWeaponStats(player.name, player.platform),
+      getFromWeb: () => _service.getWeaponStats(player.id, player.platform),
     );
   }
 
@@ -84,7 +84,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getVehiclesStats(player),
       saveToCache: (stats) => _cache.setVehicleStats(player, stats),
-      getFromWeb: () => _service.getVehicleStats(player.name, player.platform),
+      getFromWeb: () => _service.getVehicleStats(player.id, player.platform),
     );
   }
 
@@ -97,7 +97,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getClassStats(player),
       saveToCache: (stats) => _cache.setClassStats(player, stats),
-      getFromWeb: () => _service.getClassStats(player.name, player.platform),
+      getFromWeb: () => _service.getClassStats(player.id, player.platform),
     );
   }
 
@@ -110,7 +110,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getGameModeStats(player),
       saveToCache: (stats) => _cache.setGameModeStats(player, stats),
-      getFromWeb: () => _service.getGameModeStats(player.name, player.platform),
+      getFromWeb: () => _service.getGameModeStats(player.id, player.platform),
     );
   }
 
@@ -123,7 +123,7 @@ class StatsRepositoryImpl extends StatsRepository with Repository {
       accessType: accessType,
       getFromCache: () => _cache.getProgressStats(player),
       saveToCache: (stats) => _cache.setProgressStats(player, stats),
-      getFromWeb: () => _service.getProgressStats(player.name, player.platform),
+      getFromWeb: () => _service.getProgressStats(player.id, player.platform),
     );
   }
 

@@ -17,11 +17,11 @@ class StatsService {
 
   StatsService(this._api);
 
-  Future<PlayerStats?> getPlayerStats(String playerName, GamingPlatform platform) async {
+  Future<PlayerStats?> getPlayerStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'stats',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );
@@ -37,11 +37,11 @@ class StatsService {
     }
   }
 
-  Future<List<WeaponStats>?> getWeaponStats(String playerName, GamingPlatform platform) async {
+  Future<List<WeaponStats>?> getWeaponStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'weapons',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );
@@ -57,11 +57,11 @@ class StatsService {
     }
   }
 
-  Future<List<VehicleStats>?> getVehicleStats(String playerName, GamingPlatform platform) async {
+  Future<List<VehicleStats>?> getVehicleStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'vehicles',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );
@@ -77,11 +77,11 @@ class StatsService {
     }
   }
 
-  Future<List<ClassStats>?> getClassStats(String playerName, GamingPlatform platform) async {
+  Future<List<ClassStats>?> getClassStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'classes',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );
@@ -97,11 +97,11 @@ class StatsService {
     }
   }
 
-  Future<List<GameModeStats>?> getGameModeStats(String playerName, GamingPlatform platform) async {
+  Future<List<GameModeStats>?> getGameModeStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'gamemode',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );
@@ -117,11 +117,11 @@ class StatsService {
     }
   }
 
-  Future<List<ProgressStats>?> getProgressStats(String playerName, GamingPlatform platform) async {
+  Future<List<ProgressStats>?> getProgressStats(int playerId, GamingPlatform platform) async {
     final response = await _api.sendRequest(
       'progress',
       {
-        'name': playerName,
+        'playerid': playerId,
         'platform': platform.name,
       },
     );

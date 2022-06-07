@@ -71,32 +71,32 @@ class FakeStatsService implements StatsService {
   });
 
   @override
-  Future<PlayerStats?> getPlayerStats(String playerName, GamingPlatform platform) async {
+  Future<PlayerStats?> getPlayerStats(int playerId, GamingPlatform platform) async {
     return stats;
   }
 
   @override
-  Future<List<WeaponStats>?> getWeaponStats(String playerName, GamingPlatform platform) async {
+  Future<List<WeaponStats>?> getWeaponStats(int playerId, GamingPlatform platform) async {
     return weaponStats;
   }
 
   @override
-  Future<List<VehicleStats>?> getVehicleStats(String playerName, GamingPlatform platform) async {
+  Future<List<VehicleStats>?> getVehicleStats(int playerId, GamingPlatform platform) async {
     return vehicleStats;
   }
 
   @override
-  Future<List<ClassStats>?> getClassStats(String playerName, GamingPlatform platform) async {
+  Future<List<ClassStats>?> getClassStats(int playerId, GamingPlatform platform) async {
     return classStats;
   }
 
   @override
-  Future<List<GameModeStats>?> getGameModeStats(String playerName, GamingPlatform platform) async {
+  Future<List<GameModeStats>?> getGameModeStats(int playerId, GamingPlatform platform) async {
     return gameModeStats;
   }
 
   @override
-  Future<List<ProgressStats>?> getProgressStats(String playerName, GamingPlatform platform) async {
+  Future<List<ProgressStats>?> getProgressStats(int playerId, GamingPlatform platform) async {
     return progressStats;
   }
 }

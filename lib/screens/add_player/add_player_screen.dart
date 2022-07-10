@@ -160,6 +160,7 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
         controller: _nameController,
         focusNode: _node,
         validator: vm.validatePlayerName,
+        onFieldSubmitted: (_) => _onConfirm(),
         style: const TextStyle(color: Colors.white, fontSize: 20),
         cursorColor: Colors.white,
         decoration: const InputDecoration(

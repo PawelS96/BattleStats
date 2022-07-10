@@ -31,6 +31,7 @@ class WeaponStats {
   });
 
   factory WeaponStats.fromJson(Map<String, dynamic> json) {
+    final name = castOrNull<String>(json['weaponName']) ?? '';
     return WeaponStats(
       accuracy: castOrNull<String>(json['accuracy']) ?? '0.0%',
       headshotKills: castOrNull<int>(json['headshotKills']) ?? 0,
@@ -42,9 +43,22 @@ class WeaponStats {
       shotsFired: castOrNull<int>(json['shotsFired']) ?? 0,
       shotsHit: castOrNull<int>(json['shotsHit']) ?? 0,
       timeEquipped: castOrNull<int>(json['timeEquipped']) ?? 0,
-      type: castOrNull<String>(json['type']) ?? '',
-      weaponName: castOrNull<String>(json['weaponName']) ?? '',
+      type: _getCorrectWeaponType(name, castOrNull<String>(json['type']) ?? ''),
+      weaponName: name,
     );
+  }
+
+  static String _getCorrectWeaponType(String name, String type) {
+    final lowercaseName = name.toLowerCase();
+    if (lowercaseName.contains('arisaka') || lowercaseName.contains('carcano')) {
+      return 'Rifle';
+    }
+
+    if (lowercaseName.contains('m1917 patrol')){
+      return 'Smg';
+    }
+      
+    return type;
   }
 
   int get starCount => kills ~/ 100;

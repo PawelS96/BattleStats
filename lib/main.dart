@@ -27,7 +27,7 @@ Future<Color> _getNavBarColor() async {
   var color = Colors.transparent;
   if (Platform.isAndroid) {
     final info = await DeviceInfoPlugin().androidInfo;
-    final version = info.version.sdkInt ?? 0;
+    final version = info.version.sdkInt;
     if (version >= 31) {
       return Colors.black;
     }

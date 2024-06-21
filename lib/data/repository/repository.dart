@@ -1,4 +1,4 @@
-class Repository {
+mixin class Repository {
   Stream<T?> fetchAndCache<T>({
     required DataAccessType accessType,
     required Future<T?> Function() getFromCache,

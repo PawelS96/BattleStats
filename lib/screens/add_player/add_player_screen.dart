@@ -70,6 +70,7 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(message),
+          backgroundColor: Colors.white,
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),

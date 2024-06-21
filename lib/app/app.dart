@@ -44,6 +44,20 @@ class BattleStatsApp extends StatelessWidget {
               centerTitle: true,
               elevation: 0,
               color: Colors.transparent,
+              iconTheme: IconThemeData(
+                color: Colors.white
+              ),
+              titleTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 18
+              )
+            ),
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: ZoomPageTransitionsBuilder(
+                  allowEnterRouteSnapshotting: false,
+                ),
+              },
             ),
           ),
           debugShowCheckedModeBanner: false,
@@ -56,8 +70,8 @@ class BattleStatsApp extends StatelessWidget {
                 key: Key(player.id.toString()),
                 player: player,
               ),
-              loading: () => Stack(
-                children: const [
+              loading: () => const Stack(
+                children: [
                   BackgroundImage(),
                   Center(
                     child: CircularProgressIndicator(),

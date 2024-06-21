@@ -1,3 +1,4 @@
+import 'package:battlestats/app/app_state.dart';
 import 'package:battlestats/common/widgets/background_image.dart';
 import 'package:battlestats/data/local/player_repository.dart';
 import 'package:battlestats/data/local/preferences.dart';
@@ -44,13 +45,8 @@ class BattleStatsApp extends StatelessWidget {
               centerTitle: true,
               elevation: 0,
               color: Colors.transparent,
-              iconTheme: IconThemeData(
-                color: Colors.white
-              ),
-              titleTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 18
-              )
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
             ),
             pageTransitionsTheme: const PageTransitionsTheme(
               builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -62,26 +58,28 @@ class BattleStatsApp extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           home: Consumer<AppViewModel>(
-            builder: (ctx, vm, _) => vm.state.map<Widget>(
-              noPlayerSelected: () => AddPlayerScreen(
-                onAdded: ctx.read<AppViewModel>().changePlayer,
-              ),
-              playerSelected: (player) => MainScreen(
-                key: Key(player.id.toString()),
-                player: player,
-              ),
-              loading: () => const Stack(
-                children: [
-                  BackgroundImage(),
-                  Center(
-                    child: CircularProgressIndicator(),
-                  )
-                ],
-              ),
-            ),
+            builder: (ctx, vm, _) => _content(vm.state, ctx),
           ),
         ),
       ),
     );
+  }
+
+  Widget _content(AppState state, BuildContext context) {
+    return switch (state) {
+      InitialLoading() => const Stack(
+        children: [
+          BackgroundImage(),
+          Center(child: CircularProgressIndicator()),
+        ],
+      ),
+      NoPlayerSelected() => AddPlayerScreen(
+        onAdded: context.read<AppViewModel>().changePlayer,
+      ),
+      PlayerSelected() => MainScreen(
+        key: Key(state.player.id.toString()),
+        player: state.player,
+      )
+    };
   }
 }

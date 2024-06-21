@@ -40,19 +40,22 @@ class AddPlayerViewModel with ChangeNotifier {
     }
 
     final response = await _playerService.getPlayer(name, platform);
-
-    if (response is PlayerFoundResponse) {
-      final player = response.player;
-      _playerRepo.addPlayer(player);
-      _eventsController.add(PlayerAdded(player));
-    } else if (response is PlayerNotFoundResponse) {
-      _eventsController.add(PlayerAddError('Player not found'));
-      isLoading = false;
-      notifyListeners();
-    } else {
-      _eventsController.add(PlayerAddError('Something went wrong'));
-      isLoading = false;
-      notifyListeners();
+    switch (response) {
+      case PlayerFoundResponse():
+        final player = response.player;
+        _playerRepo.addPlayer(player);
+        _eventsController.add(PlayerAdded(player));
+        break;
+      case PlayerNotFoundResponse():
+        _eventsController.add(PlayerAddError('Player not found'));
+        isLoading = false;
+        notifyListeners();
+        break;
+      case null:
+        _eventsController.add(PlayerAddError('Something went wrong'));
+        isLoading = false;
+        notifyListeners();
+        break;
     }
   }
 

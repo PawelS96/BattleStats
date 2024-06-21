@@ -1,6 +1,6 @@
 import 'package:battlestats/models/player/player.dart';
 
-abstract class GetPlayerResponse {}
+sealed class GetPlayerResponse {}
 
 class PlayerFoundResponse extends GetPlayerResponse {
   final Player player;

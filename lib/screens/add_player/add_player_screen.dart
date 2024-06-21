@@ -56,10 +56,13 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
   }
 
   void _handleEvent(AddPlayerEvent event) {
-    if (event is PlayerAdded) {
-      widget.onAdded(event.player);
-    } else if (event is PlayerAddError) {
-      _showError(event.message);
+    switch (event) {
+      case PlayerAdded():
+        widget.onAdded(event.player);
+        break;
+      case PlayerAddError():
+        _showError(event.message);
+        break;
     }
   }
 

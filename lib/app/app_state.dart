@@ -1,6 +1,6 @@
 import 'package:battlestats/models/player/player.dart';
 
-abstract class AppState {
+sealed class AppState {
   AppState._();
 
   factory AppState.initial() = InitialLoading;
@@ -8,21 +8,6 @@ abstract class AppState {
   factory AppState.noPlayerSelected() = NoPlayerSelected;
 
   factory AppState.playerSelected(Player player) = PlayerSelected;
-
-  T map<T>({
-    required T Function() loading,
-    required T Function() noPlayerSelected,
-    required T Function(Player) playerSelected,
-  }) {
-    if (this is PlayerSelected) {
-      return playerSelected((this as PlayerSelected).player);
-    }
-    if (this is NoPlayerSelected) {
-      return noPlayerSelected();
-    }
-
-    return loading();
-  }
 }
 
 class InitialLoading extends AppState {

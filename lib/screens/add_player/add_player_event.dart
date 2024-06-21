@@ -1,6 +1,6 @@
 import 'package:battlestats/models/player/player.dart';
 
-abstract class AddPlayerEvent {}
+sealed class AddPlayerEvent {}
 
 class PlayerAdded extends AddPlayerEvent {
   final Player player;

@@ -40,13 +40,18 @@ class BattleStatsApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Battlestats',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+            colorScheme: ColorScheme.fromSwatch(
+             accentColor: Colors.white,
+              backgroundColor: Colors.white,
+              cardColor: Colors.white,
+            ).copyWith(secondary: Colors.white),
             appBarTheme: const AppBarTheme(
               centerTitle: true,
               elevation: 0,
               color: Colors.transparent,
               iconTheme: IconThemeData(color: Colors.white),
               titleTextStyle: TextStyle(color: Colors.white, fontSize: 18),
+              scrolledUnderElevation: 0
             ),
             pageTransitionsTheme: const PageTransitionsTheme(
               builders: <TargetPlatform, PageTransitionsBuilder>{

@@ -91,15 +91,15 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: vm,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        backgroundColor: Colors.black,
-        appBar: AppBar(),
-        body: Consumer<AddPlayerViewModel>(
-          builder: (ctx, vm, _) => Stack(
-            children: [
-              const BackgroundImage(),
-              SafeArea(
+      child: Stack(
+        children: [
+          const BackgroundImage(),
+          Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(),
+            body: Consumer<AddPlayerViewModel>(
+              builder: (ctx, vm, _) => SafeArea(
                 top: false,
                 child: Center(
                   child: vm.isLoading
@@ -148,9 +148,9 @@ class _AddPlayerScreenState extends State<AddPlayerScreen> {
                         ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -34,7 +34,6 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   cached_network_image: ^3.3.1
-  device_info_plus: ^10.1.0
 
 dev_dependencies:
   flutter_test:

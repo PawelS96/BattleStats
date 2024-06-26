@@ -183,30 +183,10 @@ class _MainScreenState extends State<MainScreen> {
         const SizedBox(height: 80),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CachedNetworkImage(
-            imageBuilder: (ctx, image) => CircleAvatar(backgroundImage: image, radius: 50),
-            placeholder: (_, __) => const SizedBox(
-              width: 100,
-              height: 100,
-              child: CircularProgressIndicator(),
-            ),
-            imageUrl: widget.player.avatar ?? '',
-            errorWidget: (ctx, _, __) => Container(
-              padding: const EdgeInsets.all(8),
-              child: const Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 80,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 4),
-                borderRadius: const BorderRadius.all(Radius.circular(75)),
-              ),
-            ),
-          ),
+          child: _playerAvatar(),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
           child: Text(
             widget.player.name,
             style: const TextStyle(
@@ -215,8 +195,65 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ),
-        _changePlayerButton(),
+        _playerRank(),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: _changePlayerButton(),
+        ),
       ],
+    );
+  }
+
+  Widget _playerAvatar() {
+    return CachedNetworkImage(
+      imageBuilder: (ctx, image) => CircleAvatar(backgroundImage: image, radius: 50),
+      placeholder: (_, __) => const SizedBox(
+        width: 100,
+        height: 100,
+        child: CircularProgressIndicator(),
+      ),
+      imageUrl: widget.player.avatar ?? '',
+      errorWidget: (ctx, _, __) => Container(
+        padding: const EdgeInsets.all(8),
+        child: const Icon(
+          Icons.person,
+          color: Colors.white,
+          size: 80,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 4),
+          borderRadius: const BorderRadius.all(Radius.circular(75)),
+        ),
+      ),
+    );
+  }
+
+  Widget _playerRank() {
+    const imageSize = 32.0;
+    final imageUrl = vm.stats?.rankImg;
+    final rank = vm.stats?.rank;
+    return SizedBox(
+      height: imageSize,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (imageUrl != null)
+            CachedNetworkImage(
+              width: imageSize,
+              height: imageSize,
+              imageUrl: imageUrl,
+              placeholder: (_, __) => const SizedBox(width: imageSize, height: imageSize),
+              errorWidget: (_, __, ___) => Container(width: 0),
+            ),
+          const SizedBox(width: 4),
+          if (rank != null)
+            Text(
+              rank.toString(),
+              style: const TextStyle(color: Colors.white),
+            )
+        ],
+      ),
     );
   }
 

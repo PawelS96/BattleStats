@@ -56,8 +56,9 @@ class BattleStatsApp extends StatelessWidget {
             pageTransitionsTheme: const PageTransitionsTheme(
               builders: <TargetPlatform, PageTransitionsBuilder>{
                 TargetPlatform.android: ZoomPageTransitionsBuilder(
-                  allowEnterRouteSnapshotting: false,
-                ),
+                  allowSnapshotting: false,
+                  backgroundColor: Colors.transparent,
+                )
               },
             ),
           ),
